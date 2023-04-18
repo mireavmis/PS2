@@ -9,10 +9,8 @@ module PS2_Manager (
 parameter WAIT_ONE = 0;
 parameter WAIT_ZERO = 1;
 reg state;
-// Выходы модуля приёма одного пакета PS2
 wire PS2_R_O, PS2_ERROR;
 wire [7:0] PS2_out;
-// Регистр флага отжатия клавиши
 reg release_flag;
 initial begin
     state = 0; R_O = 0;
@@ -41,7 +39,6 @@ always@(posedge clk) begin
         end
     endcase
 end
-// Приём одного пакета
 PS2 ps2(
 
     .PS2_clk (PS2_clk),
@@ -53,6 +50,5 @@ PS2 ps2(
 
     .clk     (clk)
 );
-// Дешифратор пакета
 PS2_DC dc(.keycode(PS2_out), .out(out), .flags(flags));
 endmodule

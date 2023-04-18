@@ -69,7 +69,6 @@ module segment_controller(
         end
         else
             anodes <= 8'b11111111;
-    end // end always@(posedge clk)
 
     param_counter #(.UPPER_BOUND(8)) 
         counter(.clk(clk), .rst(1'b0), .cnt(current_number_digit));
