@@ -48,11 +48,11 @@ always@(negedge PS2_clk_sync_reg[1]) begin
     begin
     if (cnt_reg == 4'd8)
         state_reg <= PARITY_BIT;
-    PS2_buf_reg <= {PS2_dat_sync[1], PS2_buf_reg[7:1]};
+    PS2_buf_reg <= {PS2_dat_sync_reg[1], PS2_buf_reg[7:1]};
     end
     PARITY_BIT: 
     begin
-        if ((~^PS2_buf_reg) == PS2_dat_sync[1])
+        if ((~^PS2_buf_reg) == PS2_dat_sync_reg[1])
             state_reg <= STOP_BIT;
         else
             state_reg <= IDLE;
@@ -67,7 +67,7 @@ always@(negedge PS2_clk_sync_reg[1]) begin
     endcase
 end
 
-always@(negedge PS2_clk_sync[1]) begin
+always@(negedge PS2_clk_sync_reg[1]) begin
     cnt_reg <= cnt_reg + 1;
     if (cnt_reg == 4'd10)
         cnt_reg <= 0;
