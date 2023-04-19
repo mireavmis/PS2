@@ -15,6 +15,7 @@ wire enter_emul;
 wire [31:0] numb; 
 wire [3:0] ps2_out;
 reg [31:0] numb_reg;
+wire R_O;
 
 wire [7:0] mask;
 reg [7:0] mask_reg;
@@ -38,6 +39,17 @@ always@(posedge clk100mhz) begin
 end
 
 assign enter_emul = R_O && flags[0];
+
+clk_divider #(
+    .DIV(1000) // change to 1000
+)
+clk_divider_100khz(
+    
+    .divided_clk (clk100khz),
+
+    .clk         (clk100mhz),
+    .rst         (1'b0     )
+);
 
 segment_controller display(
 
