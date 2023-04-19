@@ -1,6 +1,8 @@
 `timescale 1ns / 1ps
 
 module top(
+    input PS2_dat,
+    input PS2_clk,
     input clk100mhz,
     input reset,
     output [7:0] anodes,
