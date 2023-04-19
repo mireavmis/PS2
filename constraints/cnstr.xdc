@@ -20,4 +20,6 @@ set_property -dict { PACKAGE_PIN K2 IOSTANDARD LVCMOS33 } [get_ports { anodes[6]
 set_property -dict { PACKAGE_PIN U13 IOSTANDARD LVCMOS33 } [get_ports { anodes[7] }];
 ##Buttons
 set_property -dict { PACKAGE_PIN M18 IOSTANDARD LVCMOS33 } [get_ports { reset }];
-
+##PS2
+set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN F4} [get_ports {PS2_clk} ]
+set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN B2} [get_ports {PS2_dat} ]
