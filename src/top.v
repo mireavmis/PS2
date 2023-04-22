@@ -12,32 +12,38 @@ module top(
 wire clk100khz;
 wire enter_emul;
 
-wire [31:0] numb; 
 wire [3:0] ps2_out;
-reg [31:0] numb_reg;
 wire R_O;
+wire reset, reset_sync,
+    reset_sync_enable;
 
 wire [7:0] mask;
 reg [7:0] mask_reg;
+
+wire [31:0] numb; 
+reg [31:0] numb_reg;
 
 wire [1:0] flags;
 
 initial begin
     numb_reg <= 0;
-    mask_reg <= 0;
+    mask_reg <= 8'b1111_1111;
 end
 
 always@(posedge clk100mhz) begin
+    // Pressed Enter
     if (flags[1]) begin
+        // Flush buffer
         numb_reg <= numb;
         mask_reg <= mask;
     end
     else begin
         numb_reg <= numb_reg;
-        mask_reg <= mask;
+        mask_reg <= mask_reg;
     end
 end
 
+// Emulates pressing a symbol
 assign enter_emul = R_O && flags[0];
 
 clk_divider #(
@@ -49,6 +55,17 @@ clk_divider_100khz(
 
     .clk         (clk100mhz),
     .rst         (1'b0     )
+);
+
+debouncer resest_debouncer(
+    
+    .clock_enable      (1'b1             ),
+    .in_signal         (reset            ),
+
+    .out_signal        (reset_sync       ),
+    .out_signal_enable (reset_sync_enable),
+
+    .clk               (clk100mhz        )
 );
 
 segment_controller display(
