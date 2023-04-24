@@ -26,17 +26,31 @@ reg  [31:0] numb_reg;
 wire fsm_error;
 wire [15:0] fsm_res;
 wire fsm_R_O;
+reg fsm_R_O_reg;
 wire [1:0] flags;
 
 
 initial begin
     numb_reg <= 0;
     mask_reg <= 8'b1111_1111;
+    fsm_R_O_reg <= 0;
 end
 
 always@(posedge clk100mhz) begin
-    mask_reg <= mask;
-    numb_reg <= numb;
+    if (fsm_R_O)
+        fsm_R_O_reg <= 1;
+    else if (reset_sync_enable)
+        fsm_R_O_reg <= 0;
+end
+always@(posedge clk100mhz) begin
+    if (fsm_R_O_reg) begin
+        mask_reg <= 8'b1111_0000;
+        numb_reg <= fsm_res;
+    end
+    else begin
+        mask_reg <= mask;
+        numb_reg <= numb;
+    end
 end
 
 // Emulates pressing a symbol
@@ -71,7 +85,7 @@ segment_controller display(
 
     .NUMB     (numb_reg ),
     .MASK     (mask_reg ),
-    .ERROR    (fsm_error ),
+    .ERROR    (fsm_error),
 
     .anodes   (anodes   ),
     .cathodes (cathodes ),
