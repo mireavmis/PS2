@@ -37,19 +37,20 @@ initial begin
 end
 
 always@(posedge clk100mhz) begin
-    if (fsm_R_O)
+    if (fsm_R_O) begin
+        mask_reg <= 8'b1111_0000;
+        numb_reg[15:0] <= fsm_res;
         fsm_R_O_reg <= 1;
+    end
     else if (reset_sync_enable)
         fsm_R_O_reg <= 0;
-end
-always@(posedge clk100mhz) begin
-    if (fsm_R_O_reg) begin
-        mask_reg <= 8'b1111_0000;
-        numb_reg <= fsm_res;
-    end
-    else begin
+    else if (fsm_R_O_reg == 0) begin
         mask_reg <= mask;
         numb_reg <= numb;
+    end
+    else begin
+        mask_reg <= mask_reg;
+        numb_reg <= numb_reg;
     end
 end
 
@@ -60,7 +61,7 @@ assign enter_emul = R_O && flags[0];
 assign fsm_R_I = R_O && flags[1];
 
 clk_divider #(
-    .DIV(1000) // change to 1000
+    .DIV(6) // change to 1000
 )
 clk_divider_100khz(
     

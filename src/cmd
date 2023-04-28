@@ -9,3 +9,4 @@
 ./fsm.v
 ./shift_reg.v
 ./PS2.v
+./tb.v
