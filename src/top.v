@@ -61,7 +61,7 @@ assign enter_emul = R_O && flags[0];
 assign fsm_R_I = R_O && flags[1];
 
 clk_divider #(
-    .DIV(6) // change to 1000
+    .DIV(1000) // change to 1000
 )
 clk_divider_100khz(
     
